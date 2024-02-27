@@ -17,12 +17,46 @@ public class App {
         Options options = new Options();
         options.createIfMissing(true);
         try (DB db = factory.open(new File("example"), options);) {
-            db.put(bytes("Tampa"), bytes("rocks"));
-            String value = asString(db.get(bytes("Tampa")));
-            db.delete(bytes("Tampa"));
+            db.put(bytes("Tampa1"), bytes("rocks1"));
+            db.put(bytes("Tampa2"), bytes("rocks2"));
+            db.put(bytes("Tampa3"), bytes("rocks3"));
+            db.put(bytes("Tampa4"), bytes("rocks4"));
+            db.put(bytes("Tampa5"), bytes("rocks5"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("hello");
+
+        try (DB db = factory.open(new File("example"), options); DBIterator iterator = db.iterator()) {
+            iterator.seek(bytes("Tampa3"));
+            String key = asString(iterator.peekNext().getKey());
+            String value = asString(iterator.peekNext().getValue());
+            System.out.println(key + " = " + value);
+            System.out.println("hasNext = " + iterator.hasNext());
+            System.out.println("hasPrev = " + iterator.hasPrev());
+
+            iterator.next();
+            key = asString(iterator.peekNext().getKey());
+            value = asString(iterator.peekNext().getValue());
+            System.out.println(key + " = " + value);
+            System.out.println("hasNext = " + iterator.hasNext());
+            System.out.println("hasPrev = " + iterator.hasPrev());
+
+            iterator.next();
+            key = asString(iterator.peekNext().getKey());
+            value = asString(iterator.peekNext().getValue());
+            System.out.println(key + " = " + value);
+            System.out.println("hasNext = " + iterator.hasNext());
+            System.out.println("hasPrev = " + iterator.hasPrev());
+
+
+            iterator.prev();
+            key = asString(iterator.peekNext().getKey());
+            value = asString(iterator.peekNext().getValue());
+            System.out.println(key + " = " + value);
+            System.out.println("hasNext = " + iterator.hasNext());
+            System.out.println("hasPrev = " + iterator.hasPrev());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

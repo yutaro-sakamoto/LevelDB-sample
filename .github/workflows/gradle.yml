@@ -35,6 +35,9 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
+    - name: Run with Gradle Wrapper
+      run: ./gradlew run
+
   dependency-submission:
 
     runs-on: ubuntu-latest
